@@ -6,6 +6,7 @@ import * as topojson from 'topojson-client';
 import landTopology from '../assets/land_10m.json';
 import pointsData from '../assets/random-locations.json';
 import texture from '../assets/texture.jpg';
+import raqn from '../assets/raqn.webp';
 
 const min = 1000;
 const max = 4000;
@@ -42,59 +43,78 @@ const Page = () => {
   };
 
   return (
-    <div className='cursor-move'>
-      <Globe
-        ref={globeRef}
-        onGlobeReady={globeReady}
-        backgroundColor='#08070e'
-        rendererConfig={{ antialias: true, alpha: true }}
-        globeMaterial={
-          new THREE.MeshPhongMaterial({
-            color: '#1a2033',
-            opacity: 0.95,
-            transparent: true,
-          })
-        }
-        atmosphereColor='#5784a7'
-        atmosphereAltitude={0.5}
-        pointsMerge={true}
-        pointsData={pointsData}
-        pointAltitude={0.01}
-        pointRadius={0.2}
-        pointResolution={5}
-        pointColor={() => '#eed31f'}
-        arcsData={arcsData}
-        arcAltitudeAutoScale={0.3}
-        arcColor='color'
-        arcStroke={0.5}
-        arcDashGap={2}
-        arcDashAnimateTime='time'
-        polygonsData={topojson.feature(landTopology, landTopology.objects.land).features}
-        polygonSideColor={() => '#00000000'}
-        polygonCapMaterial={
-          new THREE.MeshPhongMaterial({
-            color: '#49ac8f',
-            side: THREE.DoubleSide,
-            map: new THREE.TextureLoader().load(texture),
-          })
-        }
-        polygonAltitude={0.01}
-        customLayerData={[...Array(500).keys()].map(() => ({
-          lat: (Math.random() - 1) * 360,
-          lng: (Math.random() - 1) * 360,
-          altitude: Math.random() * 2,
-          size: Math.random() * 0.4,
-          color: '#faadfd',
-        }))}
-        customThreeObject={(sliceData) => {
-          const { size, color } = sliceData;
-          return new THREE.Mesh(new THREE.SphereGeometry(size), new THREE.MeshBasicMaterial({ color }));
-        }}
-        customThreeObjectUpdate={(obj, sliceData) => {
-          const { lat, lng, altitude } = sliceData;
-          return Object.assign(obj.position, globeRef.current?.getCoords(lat, lng, altitude));
-        }}
-      />
+    <div>
+
+      <div className='absolute top-8 left-8 z-10'>
+        <div className='w-28'>
+        <img src={raqn} alt='raqn' />
+        </div>
+      </div>
+
+      <div className='absolute top-8 right-8 text-white z-10'>
+        <div className='grid grid-cols-2 gap-2'>
+          <div>Total Number Of Sales</div>
+          <div>10.000.000</div>
+          <div>Total Net (€)</div>
+          <div>164.544.455</div>
+          <div>Total Item Ordered</div>
+          <div>32.544.455</div>
+        </div>
+      </div>
+      <div className='cursor-move'>
+        <Globe
+          ref={globeRef}
+          onGlobeReady={globeReady}
+          backgroundColor='#08070e'
+          rendererConfig={{ antialias: true, alpha: true }}
+          globeMaterial={
+            new THREE.MeshPhongMaterial({
+              color: '#1a2033',
+              opacity: 0.95,
+              transparent: true,
+            })
+          }
+          atmosphereColor='#5784a7'
+          atmosphereAltitude={0.5}
+          pointsMerge={true}
+          pointsData={pointsData}
+          pointAltitude={0.01}
+          pointRadius={0.2}
+          pointResolution={5}
+          pointColor={() => '#eed31f'}
+          arcsData={arcsData}
+          arcAltitudeAutoScale={0.3}
+          arcColor='color'
+          arcStroke={0.5}
+          arcDashGap={2}
+          arcDashAnimateTime='time'
+          polygonsData={topojson.feature(landTopology, landTopology.objects.land).features}
+          polygonSideColor={() => '#00000000'}
+          polygonCapMaterial={
+            new THREE.MeshPhongMaterial({
+              color: '#49ac8f',
+              side: THREE.DoubleSide,
+              map: new THREE.TextureLoader().load(texture),
+            })
+          }
+          polygonAltitude={0.01}
+          customLayerData={[...Array(500).keys()].map(() => ({
+            lat: (Math.random() - 1) * 360,
+            lng: (Math.random() - 1) * 360,
+            altitude: Math.random() * 2,
+            size: Math.random() * 0.4,
+            color: '#faadfd',
+          }))}
+          customThreeObject={(sliceData) => {
+            const { size, color } = sliceData;
+            return new THREE.Mesh(new THREE.SphereGeometry(size), new THREE.MeshBasicMaterial({ color }));
+          }}
+          customThreeObjectUpdate={(obj, sliceData) => {
+            const { lat, lng, altitude } = sliceData;
+            return Object.assign(obj.position, globeRef.current?.getCoords(lat, lng, altitude));
+          }}
+        />
+      </div>
     </div>
   );
 };
